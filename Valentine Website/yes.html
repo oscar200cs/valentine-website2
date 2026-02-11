@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>I Love You ❤️</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>I Love You ❤️</h1>
+        <img src="IMG_6548.jpeg" class="main-img" alt="Us Again">
+        <canvas id="fireworks"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("fireworks");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+
+        function createFirework() {
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    radius: Math.random() * 3,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    velocityX: Math.random() * 6 - 3,
+                    velocityY: Math.random() * 6 - 3,
+                    life: 100
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((p, i) => {
+                p.x += p.velocityX;
+                p.y += p.velocityY;
+                p.life--;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+
+                if (p.life <= 0) particles.splice(i, 1);
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        createFirework();
+        animate();
+        setInterval(createFirework, 2000);
+    </script>
+
+</body>
+</html>
